@@ -26,6 +26,7 @@ namespace Diary.Views
         public AddEditStudentView(StudentWrapper student = null)
         {
             InitializeComponent();
+
             DataContext = new AddEditStudentViewModel(student);
         }
 
