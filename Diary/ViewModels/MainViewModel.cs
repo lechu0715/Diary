@@ -1,5 +1,6 @@
 ﻿using Diary.Commands;
 using Diary.Models;
+using Diary.Models.Domains;
 using Diary.Models.Wrappers;
 using Diary.Views;
 using MahApps.Metro.Controls;
@@ -15,14 +16,16 @@ using System.Windows.Input;
 
 namespace Diary.ViewModels
 {
-    class MainViewModel : ViewModelBase
+    public class MainViewModel : ViewModelBase
     {
+        private Repository _repository = new Repository();
+
         public MainViewModel()
         {
-            using (var context = new ApplicationDbContext())
-            {
-                var students = context.Students.ToList();
-            }
+            //using (var context = new ApplicationDbContext())
+            //{
+            //    var students = context.Students.ToList();
+            //}
 
             AddStudentCommand = new RelayCommand(AddEditStudent);
             EditStudentCommand = new RelayCommand(AddEditStudent, CanEditDeleteStudent);
@@ -82,8 +85,8 @@ namespace Diary.ViewModels
         }
 
 
-        private ObservableCollection<GroupWrapper> _group; //_gropus
-        public ObservableCollection<GroupWrapper> Groups
+        private ObservableCollection<Group> _group; //_gropus
+        public ObservableCollection<Group> Groups
         {
             get { return _group; }
             set
@@ -106,7 +109,7 @@ namespace Diary.ViewModels
         private async Task DeleteStudent(object obj)
         {
             var metroWindow = Application.Current.MainWindow as MetroWindow;
-            var dialog = await metroWindow.ShowMessageAsync("Usuwanie ucznie",
+            var dialog = await metroWindow.ShowMessageAsync("Usuwanie ucznia",
                 $"Czy na pewno chcesz usunąc ucznia {SelectedStudent.FirstName} {SelectedStudent.LastName}?",
                 MessageDialogStyle.AffirmativeAndNegative);
 
@@ -114,6 +117,7 @@ namespace Diary.ViewModels
                 return;
 
             //usuwanie ucznia z bazy
+            _repository.DeleteStudent(SelectedStudent.Id);
 
             RefreshDiary();
         }
@@ -132,39 +136,18 @@ namespace Diary.ViewModels
 
         private void InitGroups()
         {
-            Groups = new ObservableCollection<GroupWrapper>
-            {
-                new GroupWrapper {Id = 0, Name = "Wszystkie"},
-                new GroupWrapper {Id = 1, Name = "1A"},
-                new GroupWrapper {Id = 2, Name = "2A"}
-            };
+            var groups = _repository.GetGroups();
+            groups.Insert(0, new Group { Id = 0, Name = "Wszystkie" });
+
+            Groups = new ObservableCollection<Group>(groups);
 
             SelectedGroupId = 0;
         }
 
         private void RefreshDiary()
         {
-            Students = new ObservableCollection<StudentWrapper>
-            {
-                new StudentWrapper
-                {
-                    FirstName = "Lechosław",
-                    LastName = "Parol",
-                    Group = new GroupWrapper {Id = 1}
-                },
-                new StudentWrapper
-                {
-                    FirstName = "Monika",
-                    LastName = "Parol",
-                    Group = new GroupWrapper { Id = 2 }
-                },
-                new StudentWrapper
-                {
-                    FirstName = "Piotr",
-                    LastName = "Klimek",
-                    Group = new GroupWrapper {Id = 1}
-                }
-            };
+            Students = new ObservableCollection<StudentWrapper>(
+                _repository.GetStudents(SelectedGroupId));
         }
     }
 }
