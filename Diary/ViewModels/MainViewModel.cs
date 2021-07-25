@@ -2,6 +2,7 @@
 using Diary.Models;
 using Diary.Models.Domains;
 using Diary.Models.Wrappers;
+using Diary.Properties;
 using Diary.Views;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
@@ -20,17 +21,21 @@ namespace Diary.ViewModels
     {
         private Repository _repository = new Repository();
 
+
+        //using (var context = new ApplicationDbContext())
+        //{
+        //    var students = context.Students.ToList();
+        //}
+
         public MainViewModel()
         {
-            //using (var context = new ApplicationDbContext())
-            //{
-            //    var students = context.Students.ToList();
-            //}
+            
 
             AddStudentCommand = new RelayCommand(AddEditStudent);
             EditStudentCommand = new RelayCommand(AddEditStudent, CanEditDeleteStudent);
             DeleteStudentCommand = new AsyncRelayCommand(DeleteStudent, CanEditDeleteStudent);
             RefreshStudentsCommand = new RelayCommand(RefreshStudents);
+            ChangeSettingsCommand = new RelayCommand(ChangeSettings);
 
             RefreshDiary();
             InitGroups();
@@ -38,10 +43,12 @@ namespace Diary.ViewModels
         }
 
         
+
         public ICommand RefreshStudentsCommand { get; set; }
         public ICommand AddStudentCommand { get; set; }
         public ICommand EditStudentCommand { get; set; }
         public ICommand DeleteStudentCommand { get; set; }
+        public ICommand ChangeSettingsCommand { get; set; }
 
 
 
@@ -148,6 +155,13 @@ namespace Diary.ViewModels
         {
             Students = new ObservableCollection<StudentWrapper>(
                 _repository.GetStudents(SelectedGroupId));
+        }
+
+        private void ChangeSettings(object obj)
+        {
+            var serverSettings = new ServerSettings();
+            //serverSettings.Closed += ServerSettings_Closed;
+            serverSettings.ShowDialog();
         }
     }
 }

@@ -13,7 +13,7 @@ using System.Windows.Input;
 
 namespace Diary.ViewModels
 {
-     public class AddEditStudentViewModel : ViewModelBase
+    public class AddEditStudentViewModel : ViewModelBase
     {
         private Repository _repository = new Repository();
         public AddEditStudentViewModel(StudentWrapper student = null)
@@ -43,8 +43,8 @@ namespace Diary.ViewModels
         public StudentWrapper Student
         {
             get { return _student; }
-            set 
-            { 
+            set
+            {
                 _student = value;
                 OnPropertyChanged();
             }
@@ -89,6 +89,9 @@ namespace Diary.ViewModels
 
         private void Confirm(object obj)
         {
+            if (Student.IsValid)
+                return;
+
             if (!IsUpdate)
                 AddStudent();
             else
