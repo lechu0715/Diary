@@ -7,6 +7,7 @@
         xmlns:local="clr-namespace:Diary.Views"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
+        Name="ServerSettingsWindow"
         Title="Ustawienia" Height="249.2" Width="439.969">
     <Grid>
         <Grid.RowDefinitions>
@@ -23,19 +24,19 @@
         </Grid.ColumnDefinitions>
 
         <Label Content="Adres serwera:" Margin="5,5,3.6,5"/>
-        <TextBox Text="{Binding ServerAdress}" Grid.Column="1" Margin="6.4,5,4.6,5"/>
+        <TextBox Text="{Binding ServerAdres}" Grid.Column="1" Margin="6.4,5,4.6,5"/>
 
         <Label Grid.Row="1" Content="Nazwa serwera:" Margin="5,5,3.6,5"/>
-        <TextBox Grid.Row="1" Grid.Column="1" Margin="6.4,5,4.6,5"/>
+        <TextBox Text="{Binding NameServer}" Grid.Row="1" Grid.Column="1" Margin="6.4,5,4.6,5"/>
 
         <Label Grid.Row="2" Content="Nazwa bazy danych:" Margin="5,5,3.6,5"/>
-        <TextBox Grid.Row="2" Grid.Column="1" Margin="6.4,5,4.6,5"/>
+        <TextBox Text="{Binding DataBase}" Grid.Row="2" Grid.Column="1" Margin="6.4,5,4.6,5"/>
 
         <Label Grid.Row="3" Content="Login:" Margin="5,5,3.6,5"/>
-        <TextBox Grid.Row="3" Grid.Column="1" Margin="6.4,5,4.6,5"/>
+        <TextBox Text="{Binding Login}" Grid.Row="3" Grid.Column="1" Margin="6.4,5,4.6,5"/>
 
         <Label Grid.Row="4" Content="Hasło:" Margin="5,5,3.6,5"/>
-        <TextBox Grid.Row="4" Grid.Column="1" Margin="6.4,5,4.6,5"/>
+        <TextBox Text="{Binding Password}" Grid.Row="4" Grid.Column="1" Margin="6.4,5,4.6,5"/>
 
         <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,-0.4,0.2" Width="220">
             <Button Command="{Binding CloseCommand}" CommandParameter="{Binding ElementName=ServerSettingsWindow}"  Content="Anuluj" Height="25" Width="100" Margin="5"/>

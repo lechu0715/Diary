@@ -22,14 +22,14 @@ namespace Diary.ViewModels
         private Repository _repository = new Repository();
 
 
-        //using (var context = new ApplicationDbContext())
-        //{
-        //    var students = context.Students.ToList();
-        //}
+        /*using (var context = new ApplicationDbContext())
+            {
+                var students = context.Students.ToList();
+             }*/
 
         public MainViewModel()
         {
-            
+
 
             AddStudentCommand = new RelayCommand(AddEditStudent);
             EditStudentCommand = new RelayCommand(AddEditStudent, CanEditDeleteStudent);
@@ -42,7 +42,7 @@ namespace Diary.ViewModels
 
         }
 
-        
+
 
         public ICommand RefreshStudentsCommand { get; set; }
         public ICommand AddStudentCommand { get; set; }
@@ -78,14 +78,14 @@ namespace Diary.ViewModels
 
         }
 
-        
+
 
         private int _selectedGroupId;
         public int SelectedGroupId
         {
             get { return _selectedGroupId; }
-            set 
-            { 
+            set
+            {
                 _selectedGroupId = value;
                 OnPropertyChanged();
             }

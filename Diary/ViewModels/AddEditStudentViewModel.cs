@@ -97,6 +97,9 @@ namespace Diary.ViewModels
             else
                 UpdateStudent();
 
+
+            
+
             CloseWindow(obj as Window);
         }
 
