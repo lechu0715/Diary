@@ -18,7 +18,6 @@ namespace Diary.ViewModels
             CloseCommand = new RelayCommand(Close);
             ConfirmCommand = new RelayCommand(Confirm);
 
-
         }
 
 
@@ -89,9 +88,6 @@ namespace Diary.ViewModels
 
         private void Confirm(object obj)
         {
-
-
-
             Settings.Default.AdressServer = _serverAdres;
             Settings.Default.ServerName = _nameServer;
             Settings.Default.DataBase = _dataBase;

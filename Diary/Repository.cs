@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using System.Data.Entity;
 using Diary.Models.Converters;
 using Diary.Models;
+using System.Windows;
+using System.Data.SqlClient;
 
 namespace Diary
 {
@@ -23,8 +25,11 @@ namespace Diary
 
         public List<StudentWrapper> GetStudents(int groupId)
         {
+            
+
             using (var context = new ApplicationDbContext())
             {
+                
                 var students = context
                     .Students
                     .Include(x => x.Group)
@@ -40,6 +45,8 @@ namespace Diary
                     .ToList()
                     .Select(x => x.ToWrapper())
                     .ToList();
+
+
             }
         }
 

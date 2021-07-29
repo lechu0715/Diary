@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -24,6 +25,15 @@ namespace Diary
                 e.Exception.Message);
 
             e.Handled = true;
+        }
+
+        private void Application_Startup(object sender, StartupEventArgs e)
+        {
+            SplashScreen screen = new SplashScreen("/Photos/dziennik.png");
+            screen.Show(false);
+            Thread.Sleep(1000);
+
+            screen.Close(new TimeSpan(0,0,1));
         }
     }
 }

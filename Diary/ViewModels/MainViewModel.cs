@@ -9,27 +9,76 @@ using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace Diary.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
         private Repository _repository = new Repository();
+        DispatcherTimer timer = new DispatcherTimer();
 
-
-        /*using (var context = new ApplicationDbContext())
-            {
-                var students = context.Students.ToList();
-             }*/
 
         public MainViewModel()
         {
+            /*using (var context = new ApplicationDbContext())
+            {
+                try
+                {
+                    context.Database.Connection.Open();
+                    context.Database.Connection.Close();
 
+                    var students = context.Students.ToList();
+                }
+                catch
+                {
+                    var result = MessageBox.Show("Niepoprawne dane", "Nie udało się połączyć z bazą danych, czy chcesz podać nowe dane?", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        var serverSettings = new ServerSettings();
+                        serverSettings.ShowDialog();
+                    }
+
+                }
+
+            }*/
+
+
+            var isConnected = IsConnected();
+
+            if (!isConnected)
+            {
+                var result = MessageBox.Show("Niepoprawne dane", "Nie udało się połączyć z bazą danych, czy chcesz podać nowe dane?", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No, MessageBoxOptions.DefaultDesktopOnly);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    var serverSettings = new ServerSettings();
+                    serverSettings.ShowDialog();
+
+
+                    
+                }
+                else if (result == MessageBoxResult.No)
+                {
+                    System.Windows.Application.Current.Shutdown();
+                }
+            }
+            else
+            {
+                using (var context = new ApplicationDbContext())
+                {
+                    var students = context.Students.ToList();
+                }
+            }
+
+                
 
             AddStudentCommand = new RelayCommand(AddEditStudent);
             EditStudentCommand = new RelayCommand(AddEditStudent, CanEditDeleteStudent);
@@ -41,8 +90,6 @@ namespace Diary.ViewModels
             InitGroups();
 
         }
-
-
 
         public ICommand RefreshStudentsCommand { get; set; }
         public ICommand AddStudentCommand { get; set; }
@@ -112,6 +159,23 @@ namespace Diary.ViewModels
         {
             return SelectedStudent != null;
         }
+/*
+        private async Task ChangeConnection()
+        {
+            var metroWindow = Application.Current.MainWindow as MetroWindow;
+            var dialog = await metroWindow.ShowMessageAsync("Niepoprawne dane", "Nie udało się połączyć z bazą danych, czy chcesz podać nowe dane?", MessageDialogStyle.AffirmativeAndNegative);
+            
+
+            if (dialog != MessageDialogResult.Negative)
+            {
+                var serverSettings = new ServerSettings();
+                serverSettings.ShowDialog();
+            }
+            else
+            {
+                return;
+            }
+        }*/
 
         private async Task DeleteStudent(object obj)
         {
@@ -160,8 +224,25 @@ namespace Diary.ViewModels
         private void ChangeSettings(object obj)
         {
             var serverSettings = new ServerSettings();
-            //serverSettings.Closed += ServerSettings_Closed;
             serverSettings.ShowDialog();
+        }
+
+        private bool IsConnected()
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                try
+                {
+                    context.Database.Connection.Open();
+                    context.Database.Connection.Close();
+                    
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
+            }
         }
     }
 }
