@@ -69,13 +69,7 @@ namespace Diary.ViewModels
                 {
                     System.Windows.Application.Current.Shutdown();
                 }
-            }
-            else
-            {
-                using (var context = new ApplicationDbContext())
-                {
-                    var students = context.Students.ToList();
-                }
+                return;
             }
 
                 

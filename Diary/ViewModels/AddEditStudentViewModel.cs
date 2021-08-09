@@ -89,7 +89,7 @@ namespace Diary.ViewModels
 
         private void Confirm(object obj)
         {
-            if (Student.IsValid)
+            if (!Student.IsValid)
                 return;
 
             if (!IsUpdate)
